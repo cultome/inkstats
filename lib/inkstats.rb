@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "inkstats/version"
+require 'faraday'
+require 'json'
 
-module Inkstats
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require_relative "inkstats/version"
+require_relative "inkstats/extractor"
+require_relative "inkstats/parser"
