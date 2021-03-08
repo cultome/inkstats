@@ -5,21 +5,34 @@ require 'sinatra'
 require 'inkstats'
 
 class InkStat < Sinatra::Base
+  default_content_type 'application/json'
+
   get '/extract' do
     cookie = params.fetch('cookie', 'ebb3e0c264fd267aeaa0c6585089216e19e7f01f')
 
-    storage = Inkstats::Storage.new
-    parser = Inkstats::Parser.new
-    extractor = Inkstats::Extractor.new cookie
-
-    data = extractor.fetch_battles
+    data = extractor(cookie).fetch_battles
     battles = parser.parse data
     inserted = storage.save battles
 
-    { count: inserted }.to_json
+    { inserted: inserted }.to_json
   end
 
   get '/init' do
-    { count: 50 }.to_json
+    storage.create_schema!
+
+    { message: 'schema created' }.to_json
+  end
+
+
+  def storage
+    Inkstats::Storage.new
+  end
+
+  def parser
+    Inkstats::Parser.new
+  end
+
+  def extractor(cookie)
+    Inkstats::Extractor.new cookie
   end
 end
