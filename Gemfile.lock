@@ -65,6 +65,7 @@ GEM
     unicode-display_width (1.7.0)
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -76,6 +77,9 @@ DEPENDENCIES
   rspec (~> 3.0)
   rubocop (~> 0.80)
   sinatra (~> 2.1)
+
+RUBY VERSION
+   ruby 2.7.2p137
 
 BUNDLED WITH
    2.2.3
