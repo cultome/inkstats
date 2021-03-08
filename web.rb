@@ -23,6 +23,11 @@ class InkStat < Sinatra::Base
     { message: 'schema created' }.to_json
   end
 
+  get '/drop' do
+    storage.drop_schema!
+
+    { message: 'schema created' }.to_json
+  end
 
   def storage
     Inkstats::Storage.new

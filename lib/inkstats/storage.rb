@@ -22,7 +22,7 @@ class Inkstats::Storage
     inserted
   end
 
-  def create_schema!
+  def drop_schema!
     stmts = [
       "DROP TABLE IF EXISTS battles_v1",
       "DROP TYPE specie",
@@ -35,7 +35,19 @@ class Inkstats::Storage
       "DROP TYPE rule",
       "DROP TYPE special_battle",
       "DROP TYPE festival_title",
+    ]
 
+    with_conn do |conn|
+      stmts.each do |query|
+        conn.exec query
+      end
+    end
+
+    puts "Done!"
+  end
+
+  def create_schema!
+    stmts = [
       "CREATE TYPE specie AS ENUM ('inklings', 'octolings')",
       "CREATE TYPE gender AS ENUM ('boy', 'girl')",
       "CREATE TYPE identify AS ENUM ('gachi', 'regular')",
