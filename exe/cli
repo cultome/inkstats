@@ -7,18 +7,24 @@ require 'inkstats'
 require 'thor'
 
 class Cli < Thor
+  desc 'init', 'Create schema'
+  def init
+    storage.create_schema!
+  end
+
   desc 'upload', 'Upload latest games'
   def upload
-    # battles = extractor.fetch_battles
+    # data = extractor.fetch_battles
     data = JSON.parse File.read('spec/data/battles.json')
     battles = parser.parse data
-    storage.save battles
+    inserted = storage.save battles
 
-    puts battles.size
+    puts "[+] Inserted #{inserted} battles"
   end
 
   no_commands do
     def storage
+      Inkstats::Storage.new
     end
 
     def parser

@@ -12,7 +12,7 @@ class Inkstats::Parser
     version = data.fetch('version', false) # splatfest only
     principal_id = data['player_result']['player']['principal_id']
     lobby_type, mode = identify_lobby data['game_mode']['key'], version
-    rule = identify_rule data['rule']['key']
+    rule = data['rule']['key']
     stage = data['stage']['id']
     weapon = data['player_result']['player']['weapon']['id']
     result = identify_result data['my_team_result']['key']
@@ -50,8 +50,8 @@ class Inkstats::Parser
     end
 
     elapsed_time = data.fetch('elapsed_time', 180)
-    start_at = data['start_time']
-    end_at = data['start_time'] + elapsed_time
+    start_at = Time.at data['start_time']
+    end_at = Time.at(data['start_time'] + elapsed_time)
 
     if mode == 'league'
       my_team_id = data['tag_id']
@@ -159,24 +159,15 @@ class Inkstats::Parser
       total_clout = total_clout_after - clout # before
     end
 
-    gears = {
-      headgear: {
-        gear: data['player_result']['player']['head']['id'],
-        primary_ability: data['player_result']['player']['head_skills']['main']['id'],
-        secondary_abilities: data['player_result']['player']['head_skills']['subs'].map{ |s| s['id'] },
-      },
-      clothing: {
-        gear: data['player_result']['player']['clothes']['id'],
-        primary_ability: data['player_result']['player']['clothes_skills']['main']['id'],
-        secondary_abilities: data['player_result']['player']['clothes_skills']['subs'].map{ |s| s['id'] },
-
-      },
-      shoes: {
-        gear: data['player_result']['player']['shoes']['id'],
-        primary_ability: data['player_result']['player']['shoes_skills']['main']['id'],
-        secondary_abilities: data['player_result']['player']['shoes_skills']['subs'].map{ |s| s['id'] },
-      },
-    }
+    headgear_gear = data['player_result']['player']['head']['id'].to_i
+    headgear_primary_ability = data['player_result']['player']['head_skills']['main']['id'].to_i
+    headgear_secondary_abilities_1, headgear_secondary_abilities_2, headgear_secondary_abilities_3 = data['player_result']['player']['head_skills']['subs'].map{ |s| s['id'].to_i }
+    clothing_gear = data['player_result']['player']['clothes']['id']
+    clothing_primary_ability = data['player_result']['player']['clothes_skills']['main']['id']
+    clothing_secondary_abilities_1, clothing_secondary_abilities_2, clothing_secondary_abilities_3 = data['player_result']['player']['clothes_skills']['subs'].map{ |s| s['id'].to_i }
+    shoes_gear = data['player_result']['player']['shoes']['id']
+    shoes_primary_ability = data['player_result']['player']['shoes_skills']['main']['id']
+    shoes_secondary_abilities_1, shoes_secondary_abilities_2, shoes_secondary_abilities_3 = data['player_result']['player']['shoes_skills']['subs'].map{ |s| s['id'].to_i }
 
     {
       assist: assist,
@@ -192,7 +183,21 @@ class Inkstats::Parser
       fest_title: fest_title,
       fest_title_after: fest_title_after,
       freshness: freshness,
-      gears: gears,
+      headgear_gear: headgear_gear,
+      headgear_primary_ability: headgear_primary_ability,
+      headgear_secondary_abilities_1: headgear_secondary_abilities_1,
+      headgear_secondary_abilities_2: headgear_secondary_abilities_2,
+      headgear_secondary_abilities_3: headgear_secondary_abilities_3,
+      clothing_gear: clothing_gear,
+      clothing_primary_ability: clothing_primary_ability,
+      clothing_secondary_abilities_1: clothing_secondary_abilities_1,
+      clothing_secondary_abilities_2: clothing_secondary_abilities_2,
+      clothing_secondary_abilities_3: clothing_secondary_abilities_3,
+      shoes_gear: shoes_gear,
+      shoes_primary_ability: shoes_primary_ability,
+      shoes_secondary_abilities_1: shoes_secondary_abilities_1,
+      shoes_secondary_abilities_2: shoes_secondary_abilities_2,
+      shoes_secondary_abilities_3: shoes_secondary_abilities_3,
       gender: gender,
       his_team_estimate_fest_power: his_team_estimate_fest_power,
       his_team_estimate_league_point: his_team_estimate_league_point,
@@ -207,7 +212,6 @@ class Inkstats::Parser
       level_before: level_before,
       lobby_type: lobby_type,
       mode: mode,
-      multiplier: multiplier,
       my_count: my_count,
       my_percent: my_percent,
       my_points: my_points,
@@ -233,7 +237,6 @@ class Inkstats::Parser
       star_rank: star_rank,
       start_at: start_at,
       synergy_bonus: synergy_bonus,
-      synergy_mult: synergy_mult,
       their_count: their_count,
       their_percent: their_percent,
       title_after: title_after,
@@ -241,7 +244,7 @@ class Inkstats::Parser
       total_clout: total_clout,
       total_clout_after: total_clout_after,
       turf_inked: turf_inked,
-      version: version,
+      # version: version,
       weapon: weapon,
       worldwide_rank: worldwide_rank,
       x_power_after: x_power_after,
@@ -255,6 +258,7 @@ class Inkstats::Parser
     end
   end
 
+  # Just for reference
   def identify_rule(key)
     case key
     when 'turf_war' then 'nawabari'
