@@ -14,10 +14,10 @@ class Cli < Thor
 
   desc 'upload', 'Upload latest games'
   def upload
-    # data = extractor.fetch_battles
+    data = extractor.fetch_battles
     data = JSON.parse File.read('spec/data/battles.json')
     battles = parser.parse data
-    inserted = storage.save battles
+    # inserted = storage.save battles
 
     puts "[+] Inserted #{inserted} battles"
   end
@@ -32,7 +32,7 @@ class Cli < Thor
     end
 
     def extractor
-      Inkstats::Extractor.new 'ebb3e0c264fd267aeaa0c6585089216e19e7f01f'
+      Inkstats::Extractor.new 'bf8f7fb17733e383f7526382acb3dcc6bf4b7053'
     end
   end
 end
