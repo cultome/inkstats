@@ -8,7 +8,7 @@ class InkStat < Sinatra::Base
   set :default_content_type, 'application/json'
 
   get '/extract' do
-    cookie = params.fetch('cookie', 'bf8f7fb17733e383f7526382acb3dcc6bf4b7053')
+    cookie = params.fetch('cookie', '6de06a709b77c4416ff8a739c4cac938ac080bb0')
 
     data = extractor(cookie).fetch_battles
     battles = parser.parse data
