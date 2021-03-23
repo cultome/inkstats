@@ -16,6 +16,7 @@ class InkStat < Sinatra::Base
 
     { inserted: inserted }.to_json
   rescue Exception => error
+    puts "[-] Error: #{error.message}:\n#{error.backtrace.join("\n  ")}"
     halt 500, { error: error.message }.to_json
   end
 

@@ -17,6 +17,7 @@ class Cli < Thor
     data = extractor.fetch_battles
     data = JSON.parse File.read('spec/data/battles.json')
     battles = parser.parse data
+    require "pry";binding.pry
     # inserted = storage.save battles
 
     puts "[+] Inserted #{inserted} battles"
@@ -32,7 +33,7 @@ class Cli < Thor
     end
 
     def extractor
-      Inkstats::Extractor.new 'bf8f7fb17733e383f7526382acb3dcc6bf4b7053'
+      Inkstats::Extractor.new '6de06a709b77c4416ff8a739c4cac938ac080bb0'
     end
   end
 end
