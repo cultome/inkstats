@@ -161,13 +161,13 @@ class Inkstats::Parser
 
     headgear_gear = data['player_result']['player']['head']['id'].to_i
     headgear_primary_ability = data['player_result']['player']['head_skills']['main']['id'].to_i
-    headgear_secondary_abilities_1, headgear_secondary_abilities_2, headgear_secondary_abilities_3 = data['player_result']['player']['head_skills']['subs'].map{ |s| s['id'].to_i }
+    headgear_secondary_abilities_1, headgear_secondary_abilities_2, headgear_secondary_abilities_3 = data['player_result']['player']['head_skills']['subs'].compact.map{ |s| s['id'].to_i }
     clothing_gear = data['player_result']['player']['clothes']['id']
     clothing_primary_ability = data['player_result']['player']['clothes_skills']['main']['id']
-    clothing_secondary_abilities_1, clothing_secondary_abilities_2, clothing_secondary_abilities_3 = data['player_result']['player']['clothes_skills']['subs'].map{ |s| s['id'].to_i }
+    clothing_secondary_abilities_1, clothing_secondary_abilities_2, clothing_secondary_abilities_3 = data['player_result']['player']['clothes_skills']['subs'].compact.map{ |s| s['id'].to_i }
     shoes_gear = data['player_result']['player']['shoes']['id']
     shoes_primary_ability = data['player_result']['player']['shoes_skills']['main']['id']
-    shoes_secondary_abilities_1, shoes_secondary_abilities_2, shoes_secondary_abilities_3 = data['player_result']['player']['shoes_skills']['subs'].map{ |s| s['id'].to_i }
+    shoes_secondary_abilities_1, shoes_secondary_abilities_2, shoes_secondary_abilities_3 = data['player_result']['player']['shoes_skills']['subs'].compact.map{ |s| s['id'].to_i }
 
     {
       assist: assist,
